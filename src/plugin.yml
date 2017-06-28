@@ -1,0 +1,23 @@
+name: HelperBot
+website: ryozuki.com
+author: Ryozuki
+main: com.ryozuki.helperbot.Main
+version: 1.0
+load: POSTWORLD
+commands:
+  setbotname:
+    description: Sets the bot name
+    usage: /setbotname <name>
+    aliases: sbn
+    permission: helperbot.set
+permissions:
+  helperbot.*:
+    description: Gives access to all helperbot commands
+    children:
+      helperbot.set: true
+      helperbot.qa: true
+      helperbot.answer: true
+  helperbot.set:
+    description: Allows user to set the bot name
+  helperbot.answer:
+    description: The bot will answer only users with this permission.
