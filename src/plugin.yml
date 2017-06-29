@@ -10,6 +10,9 @@ commands:
     usage: /setbotname <name>
     aliases: sbn
     permission: helperbot.set
+  reloadbot:
+    description: Reloads the bot
+    usage: /reloadbot
 permissions:
   helperbot.*:
     description: Gives access to all helperbot commands
@@ -21,3 +24,5 @@ permissions:
     description: Allows user to set the bot name
   helperbot.answer:
     description: The bot will answer only users with this permission.
+  helperbot.reload:
+    description: Allows the user to reload the plugin
