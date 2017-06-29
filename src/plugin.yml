@@ -13,6 +13,7 @@ commands:
   reloadbot:
     description: Reloads the bot
     usage: /reloadbot
+    permission: helperbot.reload
 permissions:
   helperbot.*:
     description: Gives access to all helperbot commands
