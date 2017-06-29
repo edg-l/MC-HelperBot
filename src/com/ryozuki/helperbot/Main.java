@@ -33,6 +33,7 @@ public final class Main extends JavaPlugin {
         saveConfig();
 
         this.getCommand("setbotname").setExecutor(new BotNameCommand(this));
+        this.getCommand("reloadbot").setExecutor(new ReloadCommand(this));
         getServer().getPluginManager().registerEvents(new ChatListener(this), this);
     }
 
@@ -47,20 +48,26 @@ public final class Main extends JavaPlugin {
         super.saveConfig();
     }
 
-    protected boolean getIgnore() {
+    boolean getIgnore() {
         return  config.getBoolean("IgnoreQuestionMark");
     }
 
-    protected String getBotName() {
+    String getBotName() {
         return config.getString("BotName");
     }
 
-    protected void setBotName(String newName) {
+    void setBotName(String newName) {
         config.set("BotName", newName);
         saveConfig();
     }
 
-    protected Map<String, Object> getQA() {
+    Map<String, Object> getQA() {
         return config.getConfigurationSection("QA").getValues(false);
     }
+
+    void setConfig(FileConfiguration config) {
+        this.config = config;
+    }
+
+
 }
