@@ -2,7 +2,7 @@ name: HelperBot
 website: ryozuki.com
 author: Ryozuki
 main: com.ryozuki.helperbot.Main
-version: 1.0
+version: 1.1
 load: POSTWORLD
 commands:
   setbotname:
