@@ -21,6 +21,7 @@ permissions:
       helperbot.set: true
       helperbot.qa: true
       helperbot.answer: true
+      helperbot.reload: true
   helperbot.set:
     description: Allows user to set the bot name
   helperbot.answer:
