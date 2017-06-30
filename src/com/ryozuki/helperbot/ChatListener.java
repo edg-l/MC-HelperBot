@@ -6,6 +6,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,7 +19,7 @@ public class ChatListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent event) {
+    public void onPlayerChat(AsyncPlayerChatEvent event) throws IOException{
 
         if(!event.getPlayer().hasPermission("helperbot.answer"))
             return;
@@ -26,19 +28,19 @@ public class ChatListener implements Listener {
 
         boolean ignore = plugin.getIgnore();
 
-        plugin.getQA().forEach((x, y) -> {
-            Pattern pattern = Pattern.compile(x.toLowerCase());
+        plugin.ReadQA().forEach((x, y) -> {
+            Pattern pattern = Pattern.compile(x.toLowerCase(), Pattern.MULTILINE);
             Matcher matcher = pattern.matcher(ignore ? msg.toLowerCase().replace("?", "") : msg.toLowerCase());
-
-            if(matcher.matches()) {
+            if(matcher.find()) {
                 Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,
-                        () -> plugin.getServer().broadcastMessage( ChatColor.UNDERLINE.toString() + ChatColor.AQUA
-                                + plugin.getBotName() + y.toString()),
+                        () -> plugin.getServer().broadcastMessage( ChatColor.translateAlternateColorCodes('&',
+                                plugin.getColor() + plugin.getBotName() + y.toString())),
                         10L);
 
                 return;
             }
         });
+
 
     }
 }
