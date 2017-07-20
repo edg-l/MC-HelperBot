@@ -28,6 +28,8 @@ public final class Main extends JavaPlugin {
         config.addDefault("BotName", "<HelperBot>:");
         config.addDefault("IgnoreQuestionMark", true);
         config.addDefault("BotColor", "&3");
+        config.addDefault("Cooldown_Message", "&3<HelperBot> &9&l» &cWait &7{cooldown} &csecconds to use the bot again.");
+        config.addDefault("Cooldown", Integer.valueOf("5"));
 
         saveConfig();
 
