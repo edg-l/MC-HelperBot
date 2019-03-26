@@ -14,6 +14,7 @@ public class ReloadCommand implements CommandExecutor {
     ReloadCommand(Main plugin) {
         this.plugin = plugin;
     }
+    ConsoleCommandSender cs = Bukkit.getConsoleSender();
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
@@ -25,7 +26,7 @@ public class ReloadCommand implements CommandExecutor {
             commandSender.sendMessage(ChatColor.GREEN + "[HelperBot] Successfully reloaded");
         }
         else {
-            Bukkit.getLogger().info("[HelperBot] Successfully reloaded");
+            cs.sendMessage(ChatColor.GREEN + "[HelperBot] Successfully reloaded");
         }
 
         return true;
