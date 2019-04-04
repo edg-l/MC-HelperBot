@@ -9,11 +9,16 @@ Permissions:
 
 This is how the generated config.yml file looks like:
 ```yml
-BotName: '<HelperBot>: '
+BotName: "&6Helperbot&r:&7"
+# If set to true it will ignore all "?", see the example image.
 IgnoreQuestionMark: true
-QA:
-  How (i|to) spawn: Try /spawn
-  How are you: I'm fine thanks :P
 ```
- 
-IgnoreQuestionMark: if set to true it will ignore all "?", see the example image.
+
+questions.txt
+```
+How are you: I'm fine thanks :P
+How (i|to) spawn: Try /spawn
+\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b: Please don't share ips!
+\b(?:[-A-Za-z0-9]+\.)+[A-Za-z]{2,6}\b: Please don't share domains!
+```
+

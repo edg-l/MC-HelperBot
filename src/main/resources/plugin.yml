@@ -1,30 +1,32 @@
+main: xyz.ryozuki.helperbot.HelperBot
 name: HelperBot
-website: ryozuki.com
+website: ryozuki.com/md/helperbot
 author: Ryozuki
-main: com.ryozuki.helperbot.Main
-version: 1.2.0
+version: 1.3.0
 load: POSTWORLD
 commands:
-  setbotname:
+  helperbot:
+    description: Main helperbot command
+    permission: helperbot.use
+    aliases: [hb]
+  helperbot setname:
     description: Sets the bot name
-    usage: /setbotname <name>
-    aliases: sbn
-    permission: helperbot.set
-  reloadbot:
-    description: Reloads the bot
-    usage: /reloadbot
+    usage: /helperbot setname <name>
+    permission: helperbot.setname
+  helperbot reload:
+    description: Reloads the configuration
     permission: helperbot.reload
 permissions:
   helperbot.*:
     description: Gives access to all helperbot commands
     children:
-      helperbot.set: true
-      helperbot.qa: true
+      helperbot.setname: true
       helperbot.answer: true
       helperbot.reload: true
-  helperbot.set:
+  helperbot.setname:
     description: Allows user to set the bot name
   helperbot.answer:
+    default: true
     description: The bot will answer only users with this permission.
   helperbot.reload:
     description: Allows the user to reload the plugin

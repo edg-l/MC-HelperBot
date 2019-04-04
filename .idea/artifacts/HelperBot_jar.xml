@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="HelperBot:jar">
-    <output-path>$USER_HOME$/Desktop/spigot/plugins</output-path>
-    <root id="archive" name="HelperBot.jar">
-      <element id="module-output" name="HelperBot" />
-    </root>
-  </artifact>
-</component>
