@@ -1,5 +1,5 @@
 # MC-HelperBot
-Questions can use regex! Find out what regex is here.
+Questions can use regex! Find out what regex is [here](https://www.computerhope.com/jargon/r/regex.htm).
 
 This plugin is a simple chat bot that will answer users questions without any need of a command.
 Permissions:
