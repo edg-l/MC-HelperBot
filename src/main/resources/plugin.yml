@@ -1,9 +1,10 @@
 main: xyz.ryozuki.helperbot.HelperBot
 name: HelperBot
-website: ryozuki.com/md/helperbot
+website: ryozuki.com/mc/helperbot
 author: Ryozuki
-version: 1.3.0
+version: 2.0.0
 load: POSTWORLD
+softdepend: [PlaceholderAPI]
 commands:
   helperbot:
     description: Main helperbot command

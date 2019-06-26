@@ -9,12 +9,11 @@ import org.bukkit.command.CommandSender;
 import java.io.IOException;
 
 public class CommandHandler implements CommandExecutor {
-    private HelperBot plugin = null;
+    private HelperBot plugin;
     static String[] commands = new String[] {"setname", "reload"};
-    private String no_permission = "§4You don't have permission to execute this command.§r";
 
-    CommandHandler(HelperBot plugin) {
-        this.plugin = plugin;
+    CommandHandler() {
+        this.plugin = HelperBot.getInstance();
     }
 
     @Override
@@ -26,10 +25,12 @@ public class CommandHandler implements CommandExecutor {
         String subcmd = args[0];
         args = (String[]) ArrayUtils.remove(args, 0);
 
+        String noPermissionText = "§4You don't have permission to execute this command.§r";
+
         switch (subcmd) {
             case "setname": {
                 if(!sender.hasPermission("helperbot.setname")) {
-                    sender.sendMessage(no_permission);
+                    sender.sendMessage(noPermissionText);
                     break;
                 }
                 if(args.length < 1) {
@@ -48,15 +49,12 @@ public class CommandHandler implements CommandExecutor {
             }
             case "reload": {
                 if(!sender.hasPermission("helperbot.reload")) {
-                    sender.sendMessage(no_permission);
+                    sender.sendMessage(noPermissionText);
                     break;
                 }
                 plugin.reloadConfig();
-                try {
-                    plugin.reload_questions();
-                } catch (IOException e) {
-                    plugin.getLogger().severe(e.toString());
-                }
+                plugin.reloadQuestions();
+                sender.sendMessage("§aSuccesfully reloaded.§r");
                 break;
             }
             default: {
