@@ -1,38 +1,41 @@
 package xyz.ryozuki.helperbot;
 
-
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 public class HelperBot extends JavaPlugin {
-    private Map<String, String> questions = new HashMap<>();
-    final Pattern pattern = Pattern.compile("(.+)[:](.+)");
+    private boolean placeHolderApiEnabled = false;
+    private static HelperBot instance;
+    private List<Question> questions = new ArrayList<>();
 
     @Override
     public void onEnable() {
+        instance = this;
         saveDefaultConfig();
         reloadConfig();
 
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            placeHolderApiEnabled = true;
+            getLogger().info("PlaceholderApi support enabled.");
+        }
+
         Metrics metrics = new Metrics(this);
-        metrics.addCustomChart(new Metrics.SimplePie("version", () -> getDescription().getVersion()));
+        metrics.addCustomChart(new Metrics.SimplePie("placeholderapi", () -> placeHolderApiEnabled ? "yes" : "no"));
 
         try {
-            reload_questions();
-        } catch (IOException | SecurityException e) {
+            reloadQuestions();
+        } catch (SecurityException e) {
             getLogger().severe(e.toString());
         }
 
-        getCommand("helperbot").setExecutor(new CommandHandler(this));
+        getCommand("helperbot").setExecutor(new CommandHandler());
         getCommand("helperbot").setTabCompleter(new AutoCompleter());
-        getServer().getPluginManager().registerEvents(new ChatListener(this), this);
+        getServer().getPluginManager().registerEvents(new ChatListener(), this);
     }
 
     @Override
@@ -40,24 +43,9 @@ public class HelperBot extends JavaPlugin {
         super.onDisable();
     }
 
-    void reload_questions() throws IOException {
+    void reloadQuestions() {
         getDataFolder().mkdir();
-        File questionsFile = new File(getDataFolder(), "questions.txt");
-
-        if (!questionsFile.exists()) {
-            String[] qas = {
-                    "How are you: I'm fine thanks :P",
-                    "How (i|to) spawn: Try /spawn",
-                    "\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b: Please don't share ips!",
-                    "\\b(?:[-A-Za-z0-9]+\\.)+[A-Za-z]{2,6}\\b: Please don't share domains!"};
-            add_questions(qas);
-        } else {
-            read_questions();
-        }
-    }
-
-    boolean shouldIgnoreQuestionMark() {
-        return getConfig().getBoolean("IgnoreQuestionMark");
+        readQuestions();
     }
 
     String getBotName() {
@@ -69,44 +57,45 @@ public class HelperBot extends JavaPlugin {
         saveConfig();
     }
 
-    private void add_questions(String[] qas) throws IOException {
-        File questionsFile = new File(getDataFolder(), "questions.txt");
-        questionsFile.createNewFile();
+    void readQuestions() {
+        File questionsFile = new File(getDataFolder(), "questions.yaml");
 
-        FileWriter writer = new FileWriter(questionsFile, true);
-        BufferedWriter buff = new BufferedWriter(writer);
-        for (String qa : qas) {
-            if (!is_valid_question(qa)) {
-                getLogger().warning(
-                        String.format(
-                                "Found a question/answer incorrectly formated, please correct this. (Format -> 'question: answer')\n" +
-                                        "Value: %s", qa)
-                );
-                continue;
-            }
-            buff.write(qa + "\n");
+        if (!questionsFile.exists()) {
+            saveResource("questions.yaml", false);
+            questionsFile = new File(getDataFolder(), "questions.yaml");
         }
-        buff.flush();
-        buff.close();
-    }
 
-    void read_questions() throws IOException {
-        File questionsFile = new File(getDataFolder(), "questions.txt");
-        Stream<String> stream = Files.lines(Paths.get(questionsFile.getPath()));
+        YamlConfiguration questionsConfig = YamlConfiguration.loadConfiguration(questionsFile);
 
-        stream.forEach((line) -> {
-            final Matcher matcher = pattern.matcher(line);
-            while (matcher.find()) {
-                questions.put(matcher.group(1), matcher.group(2));
+        questions.clear();
+
+        if (questionsConfig.contains("questions")) {
+            List<LinkedHashMap<String, Object>> list =
+                    (ArrayList<LinkedHashMap<String, Object>>) questionsConfig.getList("questions");
+
+            for (LinkedHashMap<String, Object> map : list) {
+                String question = (String) map.get("question");
+                String answer = (String) map.get("answer");
+                int cooldown = (int) map.getOrDefault("cooldown", 0);
+                boolean broadcast = (boolean) map.getOrDefault("broadcast", true);
+                boolean disable = (boolean) map.getOrDefault("disable", false);
+                if(!disable)
+                    questions.add(new Question(question, answer, cooldown, broadcast));
             }
-        });
+
+            getLogger().info(String.format("Loaded %s questions!", questions.size()));
+        }
     }
 
-    private boolean is_valid_question(String qa) {
-        return pattern.matcher(qa).matches();
-    }
-
-    public Map<String, String> getQuestions() {
+    public List<Question> getQuestions() {
         return questions;
+    }
+
+    public static HelperBot getInstance() {
+        return instance;
+    }
+
+    public boolean isPlaceHolderApiEnabled() {
+        return placeHolderApiEnabled;
     }
 }

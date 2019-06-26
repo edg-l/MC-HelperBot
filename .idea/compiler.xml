@@ -9,9 +9,5 @@
         <module name="HelperBot" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="HelperBot (1)" target="8" />
-      <module name="HelperBot (2)" target="8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

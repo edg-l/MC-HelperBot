@@ -1,3 +1,1 @@
 BotName: "&6Helperbot&r:&7"
-# If set to true it will remove "?" before processing the question, so you don't have to handle it in your regex.
-IgnoreQuestionMark: true
