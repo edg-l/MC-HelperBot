@@ -6,28 +6,40 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class CommandHandler implements CommandExecutor {
+
+    private final List<String> commands;
     private HelperBot plugin;
-    static String[] commands = new String[] {"setname", "reload"};
 
     CommandHandler(HelperBot plugin) {
         this.plugin = plugin;
+
+        commands = new ArrayList<>();
+        commands.add("setname");
+        commands.add("reload");
+    }
+
+    public List<String> getCommands() {
+        return Collections.unmodifiableList(commands);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(args.length < 1) {
+        if (args.length < 1) {
             sender.sendMessage("§aSubcommands: " + String.join(", ", commands));
             return true;
         }
-        String subcmd = args[0];
+
+        String subCmd = args[0];
         args = (String[]) ArrayUtils.remove(args, 0);
 
         String noPermissionText = "§4You don't have permission to execute this command.§r";
 
-        switch (subcmd) {
+        switch (subCmd.toLowerCase()) {
             case "setname": {
                 if(!sender.hasPermission("helperbot.setname")) {
                     sender.sendMessage(noPermissionText);
@@ -62,6 +74,7 @@ public class CommandHandler implements CommandExecutor {
             }
 
         }
+
         return true;
     }
 }
