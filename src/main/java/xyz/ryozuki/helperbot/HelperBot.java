@@ -13,18 +13,12 @@ import java.util.List;
 
 public class HelperBot extends JavaPlugin {
 
-    private static HelperBot instance;
-
     private final List<Question> questions = new ArrayList<>();
 
     private boolean placeHolderApiEnabled = false;
     private CommandHandler commandHandler;
     private AutoCompleter autoCompleter;
     private ChatListener chatListener;
-
-    public static HelperBot getInstance() {
-        return instance;
-    }
 
     public CommandHandler getCommandHandler() {
         return commandHandler;
@@ -40,8 +34,6 @@ public class HelperBot extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        instance = this;
-
         saveDefaultConfig();
         reloadConfig();
 
@@ -63,9 +55,9 @@ public class HelperBot extends JavaPlugin {
             getLogger().severe(e.toString());
         }
 
-        commandHandler = new CommandHandler();
-        autoCompleter = new AutoCompleter();
-        chatListener = new ChatListener();
+        commandHandler = new CommandHandler(this);
+        autoCompleter = new AutoCompleter(commandHandler);
+        chatListener = new ChatListener(this);
 
         final PluginCommand command = getCommand("helperbot");
 

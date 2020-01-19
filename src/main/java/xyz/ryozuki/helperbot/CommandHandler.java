@@ -15,8 +15,8 @@ public class CommandHandler implements CommandExecutor {
     private final List<String> commands;
     private HelperBot plugin;
 
-    CommandHandler() {
-        this.plugin = HelperBot.getInstance();
+    CommandHandler(HelperBot plugin) {
+        this.plugin = plugin;
 
         commands = new ArrayList<>();
         commands.add("setname");
@@ -39,33 +39,40 @@ public class CommandHandler implements CommandExecutor {
 
         String noPermissionText = "§4You don't have permission to execute this command.§r";
 
-        if (subCmd.equalsIgnoreCase("setname")) {
-            if (!sender.hasPermission("helperbot.setname")) {
-                sender.sendMessage(noPermissionText);
-                return true;
+        switch (subCmd.toLowerCase()) {
+            case "setname": {
+                if(!sender.hasPermission("helperbot.setname")) {
+                    sender.sendMessage(noPermissionText);
+                    break;
+                }
+                if(args.length < 1) {
+                    sender.sendMessage("§cMissing argument <name>");
+                    break;
+                }
+                plugin.setBotName(String.join(" ", args));
+                sender.sendMessage(
+                        String.format(
+                                "§aBot name succesfully set to:§r '%s§r'",
+                                ChatColor.translateAlternateColorCodes('&',
+                                        plugin.getBotName())
+                        )
+                );
+                break;
             }
-            if (args.length < 1) {
-                sender.sendMessage("§cMissing argument <name>");
-                return true;
+            case "reload": {
+                if(!sender.hasPermission("helperbot.reload")) {
+                    sender.sendMessage(noPermissionText);
+                    break;
+                }
+                plugin.reloadConfig();
+                plugin.reloadQuestions();
+                sender.sendMessage("§aSuccesfully reloaded.§r");
+                break;
             }
-            plugin.setBotName(String.join(" ", args));
-            sender.sendMessage(
-                    String.format(
-                            "§aBot name succesfully set to:§r '%s§r'",
-                            ChatColor.translateAlternateColorCodes('&',
-                                    plugin.getBotName())
-                    )
-            );
-        } else if (subCmd.equalsIgnoreCase("reload")) {
-            if (!sender.hasPermission("helperbot.reload")) {
-                sender.sendMessage(noPermissionText);
-                return true;
+            default: {
+                sender.sendMessage("§cUnknown command. Available commands: " + String.join(", ", commands));
             }
-            plugin.reloadConfig();
-            plugin.reloadQuestions();
-            sender.sendMessage("§aSuccesfully reloaded.§r");
-        } else {
-            sender.sendMessage("§cUnknown command. Available commands: " + String.join(", ", commands));
+
         }
 
         return true;

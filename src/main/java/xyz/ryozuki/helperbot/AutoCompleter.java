@@ -8,10 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AutoCompleter implements TabCompleter {
+
+    private final CommandHandler commandHandler;
+
+    public AutoCompleter(CommandHandler commandHandler) {
+        this.commandHandler = commandHandler;
+    }
+
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-
-        CommandHandler commandHandler = HelperBot.getInstance().getCommandHandler();
 
         List<String> autoCompleteList = new ArrayList<>();
 
