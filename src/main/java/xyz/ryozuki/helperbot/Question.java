@@ -10,7 +10,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Question {
-    private String question;
     private String answer;
     private int cooldown;
     private boolean broadcast;
@@ -19,12 +18,11 @@ public class Question {
     private Pattern pattern;
 
     public Question(String question, String answer, int cooldown, boolean broadcast) {
-        this.question = question;
         this.answer = answer;
         this.cooldown = cooldown;
         this.broadcast = broadcast;
         this.globalCooldown = 0L;
-        this.pattern = Pattern.compile(this.question, Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+        this.pattern = Pattern.compile(question, Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
     }
 
     public boolean matches(String text) {
