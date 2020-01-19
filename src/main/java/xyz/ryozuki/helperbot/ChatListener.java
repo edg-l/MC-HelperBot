@@ -34,6 +34,9 @@ public class ChatListener implements Listener {
                             player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                     plugin.getBotName() + " " + question.getAnswer(player, plugin.isPlaceHolderApiEnabled())));
                         }
+                        if (!question.isBroadcastQuestion()) {
+                            event.setCancelled(true);
+                        }
                     }
                 }), 10L);
     }
