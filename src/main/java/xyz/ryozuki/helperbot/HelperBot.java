@@ -123,7 +123,8 @@ public class HelperBot extends JavaPlugin {
                 String answer = (String) map.get("answer");
                 int cooldown = (int) map.getOrDefault("cooldown", 0);
                 boolean broadcast = (boolean) map.getOrDefault("broadcast", true);
-                questions.add(new Question(question, answer, cooldown, broadcast));
+                boolean broadcastQuestion = (boolean) map.getOrDefault("broadcast_question", true);
+                questions.add(new Question(question, answer, cooldown, broadcast, broadcastQuestion));
             }
 
             getLogger().info(String.format("Loaded %s questions!", questions.size()));
