@@ -9,7 +9,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class ChatListener implements Listener {
-    private HelperBot plugin;
+
+    private final HelperBot plugin;
 
     public ChatListener(HelperBot plugin) {
         this.plugin = plugin;
@@ -23,16 +24,20 @@ public class ChatListener implements Listener {
         Player player = event.getPlayer();
         String msg = event.getMessage().toLowerCase();
 
-        Bukkit.getScheduler().runTaskLater(plugin, () -> plugin.getQuestions().forEach((question) -> {
-            if (question.canAnswer(player) && question.matches(msg)) {
-                if (question.isBroadcasted()) {
-                    plugin.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&',
-                            plugin.getBotName() + " " + question.getAnswer(player, plugin.isPlaceHolderApiEnabled())));
-                } else {
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            plugin.getBotName() + " " + question.getAnswer(player, plugin.isPlaceHolderApiEnabled())));
-                }
-            }
-        }), 10L);
+        Bukkit.getScheduler().runTaskLater(plugin, () ->
+                plugin.getQuestions().forEach(question -> {
+                    if (question.canAnswer(player) && question.matches(msg)) {
+                        if (question.isBroadcasted()) {
+                            plugin.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&',
+                                    plugin.getBotName() + " " + question.getAnswer(player, plugin.isPlaceHolderApiEnabled())));
+                        } else {
+                            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                    plugin.getBotName() + " " + question.getAnswer(player, plugin.isPlaceHolderApiEnabled())));
+                        }
+                        if (!question.isBroadcastQuestion()) {
+                            event.setCancelled(true);
+                        }
+                    }
+                }), 10L);
     }
 }
