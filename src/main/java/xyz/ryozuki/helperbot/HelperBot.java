@@ -10,12 +10,10 @@ import java.util.*;
 
 public class HelperBot extends JavaPlugin {
     private boolean placeHolderApiEnabled = false;
-    private static HelperBot instance;
     private List<Question> questions = new ArrayList<>();
 
     @Override
     public void onEnable() {
-        instance = this;
         saveDefaultConfig();
         reloadConfig();
 
@@ -33,9 +31,9 @@ public class HelperBot extends JavaPlugin {
             getLogger().severe(e.toString());
         }
 
-        getCommand("helperbot").setExecutor(new CommandHandler());
+        getCommand("helperbot").setExecutor(new CommandHandler(this));
         getCommand("helperbot").setTabCompleter(new AutoCompleter());
-        getServer().getPluginManager().registerEvents(new ChatListener(), this);
+        getServer().getPluginManager().registerEvents(new ChatListener(this), this);
     }
 
     @Override
@@ -73,13 +71,18 @@ public class HelperBot extends JavaPlugin {
             List<LinkedHashMap<String, Object>> list =
                     (ArrayList<LinkedHashMap<String, Object>>) questionsConfig.getList("questions");
 
+            if(list == null) {
+                getLogger().warning("Couldn't load questions!");
+                return;
+            }
+
             for (LinkedHashMap<String, Object> map : list) {
                 String question = (String) map.get("question");
                 String answer = (String) map.get("answer");
                 int cooldown = (int) map.getOrDefault("cooldown", 0);
                 boolean broadcast = (boolean) map.getOrDefault("broadcast", true);
                 boolean disable = (boolean) map.getOrDefault("disable", false);
-                if(!disable)
+                if (!disable)
                     questions.add(new Question(question, answer, cooldown, broadcast));
             }
 
@@ -89,10 +92,6 @@ public class HelperBot extends JavaPlugin {
 
     public List<Question> getQuestions() {
         return questions;
-    }
-
-    public static HelperBot getInstance() {
-        return instance;
     }
 
     public boolean isPlaceHolderApiEnabled() {

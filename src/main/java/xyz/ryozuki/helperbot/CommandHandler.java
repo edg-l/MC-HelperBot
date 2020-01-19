@@ -12,8 +12,8 @@ public class CommandHandler implements CommandExecutor {
     private HelperBot plugin;
     static String[] commands = new String[] {"setname", "reload"};
 
-    CommandHandler() {
-        this.plugin = HelperBot.getInstance();
+    CommandHandler(HelperBot plugin) {
+        this.plugin = plugin;
     }
 
     @Override

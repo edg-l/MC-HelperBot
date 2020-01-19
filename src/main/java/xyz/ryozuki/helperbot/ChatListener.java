@@ -9,6 +9,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class ChatListener implements Listener {
+    private HelperBot plugin;
+
+    public ChatListener(HelperBot plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
@@ -18,14 +23,14 @@ public class ChatListener implements Listener {
         Player player = event.getPlayer();
         String msg = event.getMessage().toLowerCase();
 
-        Bukkit.getScheduler().runTaskLater(HelperBot.getInstance(), () -> HelperBot.getInstance().getQuestions().forEach((question) -> {
+        Bukkit.getScheduler().runTaskLater(plugin, () -> plugin.getQuestions().forEach((question) -> {
             if (question.canAnswer(player) && question.matches(msg)) {
                 if (question.isBroadcasted()) {
-                    HelperBot.getInstance().getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&',
-                            HelperBot.getInstance().getBotName() + " " + question.getAnswer(player)));
+                    plugin.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&',
+                            plugin.getBotName() + " " + question.getAnswer(player, plugin.isPlaceHolderApiEnabled())));
                 } else {
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            HelperBot.getInstance().getBotName() + " " + question.getAnswer(player)));
+                            plugin.getBotName() + " " + question.getAnswer(player, plugin.isPlaceHolderApiEnabled())));
                 }
             }
         }), 10L);

@@ -2,7 +2,7 @@ main: xyz.ryozuki.helperbot.HelperBot
 name: HelperBot
 website: ryozuki.com/mc/helperbot
 author: Ryozuki
-version: 2.0.0
+version: 2.1.0
 load: POSTWORLD
 softdepend: [PlaceholderAPI]
 commands:
