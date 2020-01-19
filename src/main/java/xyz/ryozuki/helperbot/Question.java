@@ -33,10 +33,10 @@ public class Question {
     }
 
     public boolean canAnswer(Player p) {
-        if(broadcast) {
+        if (broadcast) {
             return globalCooldown + (cooldown * 1000) <= System.currentTimeMillis();
         } else {
-            return  cooldownMap.getOrDefault(p.getUniqueId(), 0L) + (cooldown * 1000) <= System.currentTimeMillis();
+            return cooldownMap.getOrDefault(p.getUniqueId(), 0L) + (cooldown * 1000) <= System.currentTimeMillis();
         }
     }
 
@@ -44,24 +44,17 @@ public class Question {
         return broadcast;
     }
 
-    public int getCooldown() {
-        return cooldown;
-    }
-
-    public String getQuestion() {
-        return question;
-    }
-
-    public String getAnswer(Player p) {
-        if(broadcast) {
+    public String getAnswer(Player p, boolean usePlaceholderAPI) {
+        if (broadcast) {
             globalCooldown = System.currentTimeMillis();
         } else {
             cooldownMap.put(p.getUniqueId(), System.currentTimeMillis());
         }
 
-        if(HelperBot.getInstance().isPlaceHolderApiEnabled()) {
+        if (usePlaceholderAPI) {
             return PlaceholderAPI.setPlaceholders(p, answer);
         }
+
         return answer;
     }
 }
