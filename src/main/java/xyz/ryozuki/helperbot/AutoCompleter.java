@@ -11,17 +11,18 @@ public class AutoCompleter implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 
-        String[] Commands = CommandHandler.commands;
-        List<String> AutoComplete = new ArrayList<>();
+        CommandHandler commandHandler = HelperBot.getInstance().getCommandHandler();
+
+        List<String> autoCompleteList = new ArrayList<>();
 
         if (args.length == 1) {
             String subCommand = args[0];
-            for (String cmd : Commands) {
+            for (String cmd : commandHandler.getCommands()) {
                 if (cmd.startsWith(subCommand))
-                    AutoComplete.add(cmd);
+                    autoCompleteList.add(cmd);
             }
         }
 
-        return AutoComplete.isEmpty() ? null : AutoComplete;
+        return autoCompleteList.isEmpty() ? null : autoCompleteList;
     }
 }
