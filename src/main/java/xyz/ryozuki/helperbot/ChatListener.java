@@ -12,8 +12,8 @@ public class ChatListener implements Listener {
 
     private final HelperBot plugin;
 
-    public ChatListener() {
-        plugin = HelperBot.getInstance();
+    public ChatListener(HelperBot plugin) {
+        this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
