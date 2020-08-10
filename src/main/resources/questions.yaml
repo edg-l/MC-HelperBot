@@ -1,6 +1,6 @@
 questions:
   -
-    question: 'How (i|to) spawn'
+    question: '(?i)How (i|to) spawn'
     answer: Try /spawn
     # Cooldown is in seconds
     cooldown: 5
@@ -12,13 +12,13 @@ questions:
     # Whether to show the question message or not (user message).
     broadcast_question: yes
   -
-    question: 'How are you'
+    question: '(?i)How are you'
     answer: I'm fine thanks :P
     cooldown: 5
     broadcast: yes
   -
     # When using regex, it's recommended to use single quotes in yaml to avoid escaping.
-    question: '\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b'
+    question: '(?i)\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b'
     answer: Please don't share ips!
     cooldown: 5
     broadcast: no
@@ -26,7 +26,7 @@ questions:
   -
     # Remember, to escape a ' you need to repeat it like: ''
     # https://github.com/dotmaster/toYaml/issues/1
-    question: '(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]'
+    question: '(?i)(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]'
     answer: Please don't share urls!
     cooldown: 5
     broadcast: yes
