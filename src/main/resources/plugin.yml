@@ -1,8 +1,8 @@
 main: xyz.ryozuki.helperbot.HelperBot
 name: HelperBot
-website: ryozuki.com/mc/helperbot
+website: https://ko-fi.com/ryozuki
 author: Ryozuki
-version: 2.2.0
+version: ${project.version}
 load: POSTWORLD
 softdepend: [PlaceholderAPI]
 commands:

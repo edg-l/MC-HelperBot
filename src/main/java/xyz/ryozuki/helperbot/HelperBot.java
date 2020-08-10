@@ -42,7 +42,7 @@ public class HelperBot extends JavaPlugin {
             getLogger().info("PlaceholderApi support enabled.");
         }
 
-        Metrics metrics = new Metrics(this);
+        Metrics metrics = new Metrics(this, 4344);
 
         metrics.addCustomChart(
                 new Metrics.SimplePie("placeholderapi", () ->
