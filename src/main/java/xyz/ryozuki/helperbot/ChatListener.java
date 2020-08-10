@@ -28,16 +28,23 @@ public class ChatListener implements Listener {
                 plugin.getQuestions().forEach(question -> {
                     if (question.canAnswer(player) && question.matches(msg)) {
                         if (question.isBroadcasted()) {
-                            plugin.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&',
-                                    plugin.getBotName() + " " + question.getAnswer(player, plugin.isPlaceHolderApiEnabled())));
+                            plugin.getServer().broadcastMessage(getAnswerMessage(player, question));
                         } else {
-                            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                                    plugin.getBotName() + " " + question.getAnswer(player, plugin.isPlaceHolderApiEnabled())));
+                            player.sendMessage(getAnswerMessage(player, question));
                         }
                         if (!question.isBroadcastQuestion()) {
                             event.setCancelled(true);
                         }
                     }
                 }), 10L);
+    }
+
+    private String getAnswerMessage(Player player, Question question) {
+        return ChatColor.translateAlternateColorCodes('&',
+                String.format("%s %s",
+                        plugin.getBotName(),
+                        question.getAnswer(player, plugin.isPlaceHolderApiEnabled())
+                )
+        );
     }
 }

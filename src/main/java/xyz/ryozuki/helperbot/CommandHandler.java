@@ -13,7 +13,7 @@ import java.util.List;
 public class CommandHandler implements CommandExecutor {
 
     private final List<String> commands;
-    private HelperBot plugin;
+    private final HelperBot plugin;
 
     CommandHandler(HelperBot plugin) {
         this.plugin = plugin;
@@ -37,7 +37,7 @@ public class CommandHandler implements CommandExecutor {
         String subCmd = args[0];
         args = (String[]) ArrayUtils.remove(args, 0);
 
-        String noPermissionText = "§4You don't have permission to execute this command.§r";
+        final String noPermissionText = "§4You don't have permission to execute this command.§r";
 
         switch (subCmd.toLowerCase()) {
             case "setname": {
