@@ -30,7 +30,7 @@ public class Question {
         this.broadcast = broadcast;
         this.broadcastQuestion = broadcastQuestion;
         this.globalCooldown = 0L;
-        this.pattern = Pattern.compile(question, Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+        this.pattern = Pattern.compile(question, Pattern.MULTILINE);
     }
 
     public boolean matches(String text) {

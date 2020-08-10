@@ -22,7 +22,7 @@ public class ChatListener implements Listener {
             return;
 
         Player player = event.getPlayer();
-        String msg = event.getMessage().toLowerCase();
+        String msg = event.getMessage();
 
         Bukkit.getScheduler().runTaskLater(plugin, () ->
                 plugin.getQuestions().forEach(question -> {
